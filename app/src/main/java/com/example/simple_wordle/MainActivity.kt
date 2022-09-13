@@ -24,11 +24,14 @@ class MainActivity : AppCompatActivity() {
         val resetBtn = findViewById<Button>(R.id.resetBtn)
         val gameOverTxt = findViewById<TextView>(R.id.gameOverText)
 
-
         var guess = 1
-        button.setOnClickListener {
+        var done:Boolean = false
+        var userGuess:String = ""
 
-            var userGuess = textInput.text.toString().uppercase()
+        button.setOnClickListener {
+            userGuess = textInput.text.toString().uppercase()
+
+
             Log.v("WORDLE", userGuess)
             Log.v("WORDLE", userGuess.length.toString())
 
@@ -38,8 +41,14 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            if("OOOO"== checkGuess(userGuess)) {
+                done = true
+                resetBtn.text = "Well Done Sir!\n One More?"
+            }
+
+
             // Check guesses
-            if (guess >= 4) {
+            if (guess >= 4 || done) {
                 resetBtn.visibility = View.VISIBLE
                 gameOverTxt.text = wordToGuess
                 gameOverTxt.visibility = View.VISIBLE
@@ -76,10 +85,13 @@ class MainActivity : AppCompatActivity() {
             rightSide.visibility = View.VISIBLE
 
             resetBtn.visibility = View.GONE
+            resetBtn.text = "One More Game!?"
             gameOverTxt.visibility = View.GONE
 
             leftSide.text = ""
             rightSide.text = ""
+
+            done = false
         }
     }
 
